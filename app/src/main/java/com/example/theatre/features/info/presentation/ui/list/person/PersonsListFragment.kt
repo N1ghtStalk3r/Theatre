@@ -66,24 +66,16 @@ class PersonsListFragment : Fragment() {
 
 
     private fun handlePersons(contentResultState: ContentResultState) {
-        contentResultState.refreshPage(binding?.listPersons!!, binding?.progressBar4!!)
-        contentResultState.handleContents(
+        contentResultState.refreshPage(
+            viewToShow = binding.listPersons,
+            progressBar = binding.progressBar4,
             onStateSuccess = {
                 personsAdapter.setPersons(it as List<Agent>)
                 binding.listPersons.adapter = personsAdapter
-            },
-            onStateError = {
-                with(binding) {
-                    layoutErrorHandler.handleLayout(
-                        this?.errorLayout!!,
-                        { tryAgain() },
-                        it,
-                        this.listPersons
-                    )
-                }
             }
         )
     }
+
     private fun tryAgain() {
         binding?.errorLayout?.root?.visibility = View.INVISIBLE
         personsViewModel.init()

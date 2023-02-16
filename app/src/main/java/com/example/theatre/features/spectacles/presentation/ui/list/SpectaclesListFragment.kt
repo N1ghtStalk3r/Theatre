@@ -14,6 +14,7 @@ import com.example.theatre.core.presentation.model.handleContents
 import com.example.theatre.core.presentation.model.refreshPage
 import com.example.theatre.core.presentation.ui.LayoutErrorHandler
 import com.example.theatre.databinding.FragmentSpectaclesBinding
+import com.example.theatre.features.poster.domain.model.PosterBriefItem
 import com.example.theatre.features.spectacles.presentation.adapters.EventListAdapter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,7 +30,6 @@ class SpectaclesListFragment : Fragment() {
     private lateinit var binding: FragmentSpectaclesBinding
     private lateinit var performancesAdapter: EventListAdapter
     private val spectaclesListViewModel by viewModel<SpectaclesListViewModel>()
-    private val layoutErrorHandler by inject<LayoutErrorHandler>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,29 +56,21 @@ class SpectaclesListFragment : Fragment() {
         spectaclesListViewModel.spectacleLoaded.observe(viewLifecycleOwner, ::handleSpectacles)
     }
 
-    private fun handleSpectacles(contentResultState: ContentResultState) {
-        contentResultState.refreshPage(binding?.listEvent!!, binding?.progressBar3!!, binding?.errorLayout!!)
-        contentResultState.handleContents(
+    private fun handleSpectacles(contentResultState: ContentResultState) =
+        contentResultState.refreshPage(
             onStateSuccess = {
                 performancesAdapter.setSpectacles(it as List<Performance>)
                 binding.listEvent.adapter = performancesAdapter
             },
-            onStateError = {
-                with(binding) {
-                    layoutErrorHandler.handleLayout(
-                        this?.errorLayout!!,
-                        { tryAgain() },
-                        it,
-                        this.listEvent
-                    )
-                }
-            }
+            tryAgainAction = {
+                tryAgain()
+            },
+            viewToShow = binding.content,
+            progressBar = binding.progressBar3,
+            errorLayout = binding.errorLayout
         )
 
-    }
-
     private fun tryAgain() {
-        binding?.errorLayout?.root?.visibility = View.INVISIBLE
         spectaclesListViewModel.init()
     }
 

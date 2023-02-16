@@ -60,15 +60,13 @@ class PosterDetailFragment : ViewBindingFragment<FragmentPosterDetailBinding>() 
 
 
     private fun handlePoster(contentResultState: ContentResultState) {
-        contentResultState.refreshPage(nonNullBinding.detailsContent, nonNullBinding.progressBar2)
-        contentResultState.handleContents(
-            onStateSuccess = {
+        contentResultState.refreshPage(
+            viewToShow = nonNullBinding.detailsContent,
+            progressBar = nonNullBinding.progressBar2, onStateSuccess = {
                 setDetails(it as PosterDetails)
-            },
-            onStateError = {
-
             }
         )
+
     }
 
     private fun setDetails(posterDetails: PosterDetails) {

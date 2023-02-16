@@ -15,7 +15,7 @@ import com.example.theatre.features.spectacles.domain.usecases.GetPerformanceUse
 class SpectaclesListViewModel(
     private val getPerformanceUseCase: GetPerformanceUseCase
 ) : ViewModel() {
-    private val _spectacleLoaded = MutableLiveData<ContentResultState>()
+    private val _spectacleLoaded = MutableLiveData<ContentResultState>(ContentResultState.Loading)
     val spectacleLoaded get() = _spectacleLoaded
 
     fun init() = viewModelCall(

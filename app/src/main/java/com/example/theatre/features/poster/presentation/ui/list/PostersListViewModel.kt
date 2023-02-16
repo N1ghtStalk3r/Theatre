@@ -14,7 +14,7 @@ import com.example.theatre.features.poster.domain.usecases.GetPosterUseCase
 class PostersListViewModel(
     private val getPosterUseCase: GetPosterUseCase
 ) : ViewModel() {
-    private val _postersBriefLoaded = MutableLiveData<ContentResultState>()
+    private val _postersBriefLoaded = MutableLiveData<ContentResultState>(ContentResultState.Loading)
     val postersBrief get() = _postersBriefLoaded
 
     fun getPosters() = viewModelCall(
