@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/eventFragment"
         android:name="com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleDetailsFragment"
-        android:label="EventFragment" >
+        android:label="string/frag_event_det">
         <action
             android:id="@+id/action_eventFragment_to_eventDescriptionFragment"
             app:destination="@id/eventDescriptionFragment" />
@@ -65,8 +65,8 @@
             app:destination="@id/reviewFragment" />
         <argument
             android:name="id"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/eventDescriptionFragment"
@@ -109,11 +109,11 @@
     <fragment
         android:id="@+id/theatreFragment"
         android:name="com.example.theatre.features.info.presentation.ui.detail.theatre.TheatreFragment"
-        android:label="TheatreFragment" >
+        android:label="string/frag_place_det">
         <argument
             android:name="id"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
         <action
             android:id="@+id/action_theatreFragment_to_theatreDescriptionFragment"
             app:destination="@id/theatreDescriptionFragment" />

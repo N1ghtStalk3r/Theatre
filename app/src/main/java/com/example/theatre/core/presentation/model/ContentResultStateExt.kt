@@ -3,13 +3,12 @@ package com.example.theatre.core.presentation.model
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
-import com.example.theatre.core.presentation.ui.TryAgainAction
 import com.example.theatre.databinding.LayoutErrorBinding
 
 typealias SuccessStateAction = (content: Any?) -> Unit
 typealias ErrorStateAction = (error: ErrorModel) -> Unit
 typealias LoadingStateAction = () -> Unit
+typealias TryAgainAction = () -> Unit
 
 /**
  * Функция для удобной работы с готовым [ContentResultState] в фрагментах
@@ -34,22 +33,38 @@ fun ContentResultState.handleContents(
     }
 }
 
+/**
+ * Функция, которая упрощает работу с [ContentResultState]
+ *
+ * @param onStateSuccess    действие при успехе загрузки данных
+ * @param tryAgainAction    бействие при неудаче (напр., повторная загрузка)
+ * @param viewToShow        [ViewGroup], которую надо показать после загрузки данных
+ * @param progressBar       [ProgressBar], показывающий процесс загрузки
+ * @param errorLayout       лайаут с информацией об ошибке
+ */
 fun ContentResultState.refreshPage(
-    view: ViewGroup,
+    onStateSuccess: SuccessStateAction,
+    tryAgainAction: TryAgainAction? = null,
+    viewToShow: ViewGroup,
     progressBar: ProgressBar,
     errorLayout: LayoutErrorBinding? = null,
-    tryAgainAction: TryAgainAction? = null
 ) {
-    view.isVisible = this is ContentResultState.Content
+    if (this is ContentResultState.Content) {
+        viewToShow.isVisible = true
+        onStateSuccess.invoke(this.content)
+    }
+
+
+    errorLayout?.root?.isVisible = this is ContentResultState.Error
     if (this is ContentResultState.Error) {
-        errorLayout?.root?.isVisible = true
         errorLayout?.apply {
-            textErrorTitle.setText(this@refreshPage.error.title.toString())
-            textErrorDescription.setText(this@refreshPage.error.description.toString())
+            textErrorTitle.setText(this@refreshPage.error.title)
+            textErrorDescription.setText(this@refreshPage.error.description)
             btnErrorTryAgain.setOnClickListener {
-                tryAgainAction
+                tryAgainAction?.invoke()
             }
         }
     }
+
     progressBar.isVisible = this is ContentResultState.Loading
 }

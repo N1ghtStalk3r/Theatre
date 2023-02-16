@@ -69,23 +69,15 @@ class TheatresListFragment : Fragment() {
     }
 
     private fun handleTheatres(contentResultState: ContentResultState) {
-        contentResultState.refreshPage(binding?.listTheatre!!, binding?.progressBar5!!)
-        contentResultState.handleContents(
+        contentResultState.refreshPage(
+            viewToShow = binding?.listTheatre!!,
+            progressBar = binding?.progressBar5!!,
+
             onStateSuccess = {
                 theatresAdapter.setTheatres(it as List<Theatre>)
                 binding.listTheatre.adapter = theatresAdapter
-            },
-            onStateError = {
-                with(binding) {
-                    layoutErrorHandler.handleLayout(
-                        this?.errorLayout!!,
-                        { tryAgain() },
-                        it,
-                        this.listTheatre
-                    )
-                }
-            }
-        )
+            })
+
     }
 
     private fun tryAgain() {

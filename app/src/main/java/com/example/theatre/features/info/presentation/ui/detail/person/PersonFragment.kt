@@ -58,16 +58,15 @@ class PersonFragment : Fragment() {
         personViewModel.personDetails.observe(viewLifecycleOwner, ::handleInfo)
     }
 
-    private fun handleInfo(contentResultState: ContentResultState) {
-        contentResultState.refreshPage(binding.contentDetailzz, binding.progressBar6)
-        contentResultState.handleContents(
+    private fun handleInfo(contentResultState: ContentResultState) =
+        contentResultState.refreshPage(
+            viewToShow = binding.contentDetailzz,
+            progressBar = binding.progressBar6,
             onStateSuccess = {
                 setDetails(it as Agent)
-            },
-            onStateError = {
             }
+
         )
-    }
 
     private fun setDetails(personDetails: Agent) {
         with(binding.content) {

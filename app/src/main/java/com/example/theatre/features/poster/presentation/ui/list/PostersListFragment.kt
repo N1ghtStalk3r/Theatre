@@ -61,18 +61,17 @@ class PostersListFragment : ViewBindingFragment<FragmentPosterBinding>() {
 
     private fun handlePosters(contentResultState: ContentResultState) {
         contentResultState.refreshPage(
-            nonNullBinding.rvPosters, nonNullBinding.progressBar, nonNullBinding.errorLayout
-        )
-        contentResultState.handleContents(
             onStateSuccess = {
                 adapter.setData(it as List<PosterBriefItem>)
                 nonNullBinding.rvPosters.adapter = adapter
             },
-            onStateError = {
-                withSafeBinding {
-                    layoutErrorHandler.handleLayout(this.errorLayout, {}, it, this.rvPosters)
-                }
-            }
+            tryAgainAction = {
+
+            },
+            viewToShow = nonNullBinding.rvPosters,
+            progressBar = nonNullBinding.progressBar,
+            errorLayout = nonNullBinding.errorLayout
         )
+
     }
 }

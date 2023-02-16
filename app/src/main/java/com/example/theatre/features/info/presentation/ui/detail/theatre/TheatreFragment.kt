@@ -63,16 +63,14 @@ class TheatreFragment : Fragment() {
 
     private fun handleContent(contentResultState: ContentResultState) {
 
-        contentResultState.refreshPage(binding.contentDetailzz, binding.progressBar6)
-        contentResultState.handleContents(
+        contentResultState.refreshPage(
+            viewToShow = binding.contentDetailzz,
+            progressBar = binding.progressBar6,
             onStateSuccess = {
                 when (it) {
                     is Theatre -> setDetails(it)
                     is TheatreLocation -> setCity(it)
                 }
-            },
-            onStateError = {
-                // TODO: Добавить обработку ошибки (например сообщение)
             }
         )
     }
